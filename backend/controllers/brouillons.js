@@ -298,3 +298,87 @@ if (like === 0) {
       }))
   }
 }
+
+
+
+
+
+
+exports.likeSauce = (req, res, next) => {
+    const like = req.body.like;
+    const userId = req.body.userId;
+    const sauceId = req.params.id;
+
+
+    if (like === 1) {
+      sauce.updateOne(
+        { _id: sauceId },
+        {
+          $push: { usersLiked: userId },
+          $inc: { likes: 1 }
+        }
+
+      )
+        .then(() => res.status(200).json({
+          message: 'like ajouté'
+        }))
+        .catch((error) => res.status(400).json({
+          error
+        }))
+    } if (like === -1) {
+      sauce.updateOne(
+        { _id: sauceId },
+        {
+          $push: { usersDisliked: userId },
+          $inc: { dislikes: +1 }
+        }
+      )
+        .then(() => res.status(200).json({
+          message: 'disliked ajouté !'
+        }))
+        .catch((error) => res.status(400).json({
+          error
+        }))
+    } if (like === 0) {
+      sauce.findOne({
+        _id: req.params.id
+      })
+        .then((sauce) => {
+          if (sauce.usersLiked.includes(userId)) {
+
+            sauce.updateOne(
+              { _id: sauceId },
+              { $pull: { usersLiked: userId } },
+              { $inc: { likes: -1 } }
+
+
+            )
+              .then(() => res.status(200).json({
+                message: 'like supprimé !'
+              }))
+              .catch((error) => res.status(400).json({
+                error
+              }))
+          } if (sauce.usersDisliked.includes(userId)) {
+
+            sauce.updateOne(
+              { _id: sauceId },
+              {
+                $pull: { usersDisliked: userId },
+                $inc: { dislikes: -1 }
+              }
+            )
+              .then(() => res.status(200).json({
+                message: 'dislike supprimé !'
+              }))
+              .catch((error) => res.status(400).json({
+                error
+              }))
+          }
+        }
+        )
+        .catch((error) => res.status(404).json({
+          error
+        }))
+    }
+  }
