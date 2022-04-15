@@ -34,6 +34,7 @@ exports.getOneSauce = (req, res, next) => {
     );
 };
 
+
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file ?
     {
@@ -46,14 +47,17 @@ exports.modifySauce = (req, res, next) => {
 };
 
 exports.deleteSauce = (req, res, next) => {
+  let tokenId = req.token.userId
   sauce.findOne({ _id: req.params.id })
     .then(sauce => {
-      const filename = sauce.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
-        sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-          .catch(error => res.status(400).json({ error }));
-      });
+      if (tokenId) {
+        const filename = sauce.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => {
+          sauce.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+            .catch(error => res.status(400).json({ error }));
+        });
+      }
     })
 
     .catch(error => res.status(500).json({ error }));
@@ -89,64 +93,46 @@ exports.likeSauce = (req, res, next) => {
           if (!sauce.usersLiked.includes(userId)) {
 
             sauce.usersLiked.push(userId);
-            sauce.save();
-            res.status(200).json({
-              message: "dans case 1 ajout like"
-            })
+
           }
           if (sauce.usersDisliked.includes(userId)) {
             sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(userId), 1);
-            sauce.save();
 
-
-            res.status(200).json({
-              message: "dans case 1 delete dislike"
-            })
           }
-
+          res.status(200).json({ message: 'Like ajouté' })
 
           break
         case -1:
           if (!sauce.usersDisliked.includes(userId)) {
 
             sauce.usersDisliked.push(userId);
-            sauce.save();
-
           }
           if (sauce.usersLiked.includes(userId)) {
             sauce.usersLiked.splice(sauce.usersLiked.indexOf(userId), 1);
-            sauce.save();
-
           }
-
-          res.status(200).json({
-            message: "dans case -1"
-          })
-
+          res.status(200).json({ message: 'Dislike ajouté' })
           break
         case 0:
           if (sauce.usersDisliked.includes(userId)) {
             sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(userId), 1);
-            sauce.save();
+
 
           }
           if (sauce.usersLiked.includes(userId)) {
             sauce.usersLiked.splice(sauce.usersLiked.indexOf(userId), 1);
-            sauce.save();
+
 
           }
-          res.status(200).json({
-            message: "dans case 00000"
-          })
+          res.status(200).json({ message: "Like/Dislike supprimé" })
           break
         default:
-          res.status(200).json({
-            message: "nul part"
-          })
+
       }
       sauce.likes = sauce.usersLiked.length;
       sauce.dislikes = sauce.usersDisliked.length
+      sauce.save();
     })
+    .catch(error => res.status(400).json({ error }));
 }
 
 

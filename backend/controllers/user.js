@@ -46,7 +46,10 @@ exports.login = (req, res, next) => {
 };
 
 
+// exports.test = (req, res) => {
+//   res.status(200).json({ message: "VOus êtes connecté avec l'id : " + req.token.userId })
 
+// }
 
 
 

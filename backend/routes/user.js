@@ -12,6 +12,6 @@ router.post('/login', userCtrl.login);
 
 
 //test token
-// router.get("/test", auth, userCtrl.test);
+// router.get("/test", userCtrl.test);
 
 module.exports = router;
