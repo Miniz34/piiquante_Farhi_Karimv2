@@ -382,3 +382,59 @@ exports.likeSauce = (req, res, next) => {
         }))
     }
   }
+
+
+
+
+  exports.modifySauce = (req, res, next) => {
+    sauce.findOne({ _id: req.params.id })
+      .then(sauce => {
+        if (sauce.userId == req.token.userId) {
+          const sauceObject = req.file ?
+            {
+              ...JSON.parse(req.body.sauce),
+              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            } : { ...req.body };
+          sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+            .catch(error => res.status(400).json({ error }));
+        }
+      })
+
+    exports.modifySauce = (req, res, next) => {
+      let sauceObject = {};
+      req.file ? (
+        Sauce.findOne({
+          _id: req.params.id
+        }).then((sauce) => {
+
+          const filename = sauce.imageUrl.split('/images/')[1]
+          fs.unlinkSync(`images/${filename}`)
+        }),
+        sauceObject = {
+
+          ...JSON.parse(req.body.sauce),
+          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename
+            }`,
+        }
+      ) : (
+        sauceObject = {
+          ...req.body
+        }
+      )
+      Sauce.updateOne(
+
+        {
+          _id: req.params.id
+        }, {
+        ...sauceObject,
+        _id: req.params.id
+      }
+      )
+        .then(() => res.status(200).json({
+          message: 'Sauce modifiée !'
+        }))
+        .catch((error) => res.status(400).json({
+          error
+        }))
+    }
