@@ -438,3 +438,120 @@ exports.likeSauce = (req, res, next) => {
           error
         }))
     }
+
+
+
+
+    // let jwt = require("jsonwebtoken");
+// require('dotenv').config();
+
+// module.exports = (req, res, next) => {
+//   try {
+//     const decodedtoken = req.headers.authorization.split('')[1];
+//     const token = "TOKEN";
+//     // const decodedToken = jwt.verify(token, "Secret_Key");
+//     // const userId = decodedToken.userId;
+//     if (req.body.userId && req.body.userId !== userId) {
+//       throw "user invalide";
+//     } else {
+//       next();
+//     }
+//   } catch (error) {
+//     res.status(401).json({ error: error | "token d'authentification invalide" });
+//   }
+// }
+
+
+// exports.test = (req, res) => {
+//   res.status(200).json({ message: "VOus êtes connecté avec l'id : " + req.token.userId })
+
+// }
+
+
+
+// exports.login = (req, res, next) => {
+//   user.findOne({ email: req.body.email })
+//     .then(user => {
+//       if (!user) {
+//         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+//       }
+//       bcrypt.compare(req.body.password, user.password)
+//         .then(valid => {
+//           if (!valid) {
+//             return res.status(401).json({ error: 'Mot de passe incorrect !' });
+//           }
+//           res.status(200).json({
+//             userId: user._id,
+//             token: "TOKEN"
+//           });
+//         })
+//         .catch(error => res.status(500).json({ error }));
+//     })
+//     .catch(error => res.status(500).json({ error }));
+// };
+
+
+
+// exports.login = (req, res) => {
+//   if (req.body.email == "gerarddeux@gmail.com" && req.body.password == "aaa") {
+//     let token = jwt.sign({ userId: 10 }, process.env.TOKEN_KEY);
+//     res.status(200).json({ token });
+//   } else {
+//     res.status(401).json({ message: "Login ou mot de pass incorrect" })
+//   }
+// }
+
+
+// exports.test = (req, res) => {
+//   res.status(200).json({ message: "vous êtes authentifié" });
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+// -----------------------AUTH INITIAL-------------------------------------
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+
+
+
+
+
+
+// module.exports = (req, res, next) => {
+//   try {
+//     const token = req.headers.authorization.split(' ')[1];
+//     req.token = jwt.verify(token, process.env.TOKEN_KEY);
+//     const userId = req.token.userId;
+//     req.auth = { userId };
+//     if (req.body.userId && req.body.userId !== userId) {
+//       throw 'Invalid user ID';
+//     } else {
+//       next();
+//     }
+//   } catch {
+//     res.status(401).json({
+//       error: new Error('Invalid request!')
+//     });
+//   }
+// };
+
+
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------
+// -------------------------------------------------------------------------

@@ -5,16 +5,9 @@ const verifyPassword = require('../middleware/passwordValidity');
 
 
 
-//test token
-// const auth = require('../middleware/auth');
 
 router.post('/signup', verifyPassword, userCtrl.signup); // Crée un nouvel utilisateur
+router.post('/login', userCtrl.login); //Login sur un utilisateur existant
 
-router.post('/signup', userCtrl.signup);
-router.post('/login', userCtrl.login);
-
-
-//test token
-// router.get("/test", userCtrl.test);
 
 module.exports = router;
