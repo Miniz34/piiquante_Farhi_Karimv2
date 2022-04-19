@@ -57,40 +57,6 @@ exports.modifySauce = (req, res, next) => {
 
 
 
-// exports.modifySauce = (req, res, next) => {
-//   sauce.findOne({ _id: req.params.id })
-//     .then(sauce => {
-//       // if (sauce.userId == req.token.userId) {
-//       console.log("test");
-//       const sauceObject = req.file ?
-//         {
-//           ...JSON.parse(req.body.sauce),
-//           imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-//         } : { ...req.body }
-//       sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-//         .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
-//         .catch(error => res.status(400).json({ error }))
-
-//       // }
-//     })
-// }
-
-// exports.modifySauce = (req, res, next) => {
-
-//   sauce.findOne({ _id: req.params.id })
-//     .then(sauce => {
-//       testSauce = sauce.userId
-//       testSauceDeux = req.token.userId
-//       if (sauce.userId == req.token.userId) {
-//         sauce.updateOne({ sauce: req.body })
-//           .then(() => res.status(200).json({ testSauceDeux }))
-//           .catch(error => res.status(400).json({ error }));
-//       }
-
-//     })
-
-// };
-
 exports.deleteSauce = (req, res, next) => {
   let tokenId = req.token.userId
   Sauce.findOne({ _id: req.params.id })

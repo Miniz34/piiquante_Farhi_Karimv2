@@ -4,15 +4,18 @@ const user = require('../models/User');
 // const validator = require()
 
 let jwt = require("jsonwebtoken");
+const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
+const key = CryptoJS.enc.Hex.parse(`${process.env.AES_KEY}`);
+const iv = CryptoJS.enc.Hex.parse(`${process.env.AES_INIT_VECTOR}`);
 
 
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const newUser = new user({
-        email: req.body.email,
+        email: CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString(),
         password: hash
       });
       newUser.save()
@@ -27,7 +30,7 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-  user.findOne({ email: req.body.email })
+  user.findOne({ email: CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString() })
     .then(myUser => {
       if (!myUser) { return res.status(401).json({ error: 'Utilisateur non trouvé.' }); }
       bcrypt.compare(req.body.password, myUser.password)
@@ -44,5 +47,3 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
-
-
