@@ -3,6 +3,7 @@ const fs = require('fs');
 const Sauce = require('../models/Sauce');   //récupération du modèle Mongoose
 
 
+//Créer une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);     // Récupération des données du front-end
   delete sauceObject._id;     //suppression de l'ID sauce, on utilise celle créée par MongoDB
@@ -19,6 +20,7 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Récupération d'une seule sauce
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
     _id: req.params.id   //On veut que l'id de la sauce soit la même que l'id des paramêtres de requête
@@ -36,7 +38,7 @@ exports.getOneSauce = (req, res, next) => {
     );
 };
 
-
+// Modification d'une sauce
 exports.modifySauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -60,7 +62,7 @@ exports.modifySauce = (req, res, next) => {
 };
 
 
-
+// Suppression d'une sauce
 exports.deleteSauce = (req, res, next) => {
   let tokenId = req.token.userId
   Sauce.findOne({ _id: req.params.id })
@@ -74,14 +76,12 @@ exports.deleteSauce = (req, res, next) => {
             .catch(error => res.status(400).json({ message: "Unauthorized" }));
         });
       }
-
-
-
     })
 
     .catch(error => res.status(401).json({ error }));
 };
 
+// Récupération de toute les sauces
 exports.getAllStuff = (req, res, next) => {
   //On utilise find pour trouver la liste des sauces
   Sauce.find().then(
@@ -99,7 +99,7 @@ exports.getAllStuff = (req, res, next) => {
 };
 
 
-
+// Like/Dislike sauce
 exports.likeSauce = (req, res, next) => {
   const like = req.body.like;
   const userId = req.body.userId;

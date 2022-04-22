@@ -10,6 +10,7 @@ const key = CryptoJS.enc.Hex.parse(`${process.env.AES_KEY}`);
 const iv = CryptoJS.enc.Hex.parse(`${process.env.AES_INIT_VECTOR}`);
 
 
+// Création d'un utilisateur
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10) //On utilise Bcrypt pour le mot de passe, l'algorithme fera 10 tours
     .then(hash => {
@@ -27,7 +28,7 @@ exports.signup = (req, res, next) => {
 };
 
 
-
+// Connection à un compte utilisateur
 exports.login = (req, res, next) => {
   user.findOne({ email: CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString() }) //On cherche l'utilisateur dans la base de données cryptée
     .then(myUser => {
