@@ -75,6 +75,8 @@ exports.deleteSauce = (req, res, next) => {
             .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
             .catch(error => res.status(400).json({ message: "Unauthorized" }));
         });
+      } else {
+        return res.status(403).json({ message: "Unauthorized" })
       }
     })
 
